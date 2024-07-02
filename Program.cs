@@ -1,7 +1,7 @@
 using apiNetDonacionesEF.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using apiNetDonacionesEF.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +13,9 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddDbContext<DonacionesContext>(p => p.UseInMemoryDatabase("DonacionesDB"));
 builder.Services.AddSqlServer<DonacionesContext>(builder.Configuration.GetConnectionString("cnDonaciones"));
 Console.WriteLine(builder.Configuration.GetConnectionString("cnDonaciones"));
+ builder.Services.AddScoped<IDonanteService, DonanteService>();
+ builder.Services.AddScoped<IProyectoService, ProyectoService>();
+ builder.Services.AddScoped<IDonacionService, DonacionService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,3 +36,4 @@ app.MapGet("/dbConexion", async ([FromServices] DonacionesContext dbContext) =>
     return Results.Ok("Base de dato en memoria: " + dbContext.Database.IsInMemory());
 });
 app.Run();
+     

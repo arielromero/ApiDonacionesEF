@@ -18,7 +18,7 @@ public class Donacion
     public virtual Donante Donante {get;set;}
     public virtual Proyecto Proyecto {get;set;}
     
-    public double Monto{get;set;}
+    public  double Monto{get;set;}
 
     
 
@@ -27,13 +27,7 @@ public class Donacion
     public Donacion()
     { }
 
-    public Donacion(int id, Donante donante,  double monto, Proyecto proyecto)
-    {
-        DonacionId = DonacionId;
-        this.Donante = donante;
-        this.Proyecto = proyecto;
-        Monto = monto;
-    }
+    
 
 
 }

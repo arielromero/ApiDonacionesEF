@@ -9,20 +9,12 @@ namespace apiNetDonacionesEF.Models;
 
 public class Donante
 {
-    [Key]
     public int DonanteId {get;set;}
-    [Required]
     public string Nombre {get;set;}
-    [Required]
     public string Apellido {get;set;}
-
-    public virtual List<Donacion> Donaciones {get; set;} 
-
-
+    //public virtual List<Donacion> Donaciones {get; set;} 
     public Donante()
     { }
-
-    
 
     public override string ToString()
     {

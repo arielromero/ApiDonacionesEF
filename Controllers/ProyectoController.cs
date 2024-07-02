@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using apiNetDonacionesEF.Models;
 using apiNetDonacionesEF.Context;
 using Microsoft.EntityFrameworkCore;
+using apiNetDonacionesEF.Services;
+
 namespace apiNetDonaciones.Controllers;
 
 [ApiController]
@@ -11,99 +13,60 @@ public class ProyectoController : ControllerBase
  
 
     private readonly ILogger<ProyectoController> _logger;
-    private readonly DonacionesContext _context;
+    private readonly IProyectoService _proyectoService;
 
-    public ProyectoController(ILogger<ProyectoController> logger, DonacionesContext context)
+    public ProyectoController(ILogger<ProyectoController> logger, IProyectoService proyectoService)
     {
         _logger = logger;
-        _context = context; 
+        _proyectoService = proyectoService; 
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Proyecto>>> Get()
+    public async Task<ActionResult<IEnumerable<Proyecto>>> GetProyectos()
     {
-        return await _context.Proyectos.ToListAsync();
+        var proyectos = await _proyectoService.GetAll();
+        return Ok(proyectos);
     }
 
-    // GET api/<ProyectoController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Proyecto>> Get(int id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Proyecto>> GetProyecto(int id)
+    {
+        var proyecto = await _proyectoService.GetById(id);
+        if (proyecto == null)
         {
-            
-            var p = await _context.Proyectos.FindAsync(id);
-            
-            if(p != null)
-            {
-                return p;
-            }            
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        return Ok(proyecto);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Proyecto>> CreateProyecto(Proyecto proyecto)
+    {
+        var newProyecto = await _proyectoService.Save(proyecto);
+        return CreatedAtAction(nameof(GetProyecto), new { id = newProyecto.ProyectoId }, newProyecto);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProyecto(int id, Proyecto proyecto)
+    {
+        if (id != proyecto.ProyectoId)
+        {
+            return BadRequest();
         }
 
-        // POST api/<ProyectoController>
-        [HttpPost]
-        public async Task<ActionResult<Proyecto>> Post(Proyecto p)
+        await _proyectoService.Update(proyecto);
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProyecto(int id)
+    {
+        var result = await _proyectoService.Delete(id);
+        if (!result)
         {
-            _context.Add(p);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("Get", new { id = p.ProyectoId }, p);
-            
+            return NotFound();
         }
+        return NoContent();
+    }
 
-        // PUT api/<ProyectoController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Proyecto p, int id)
-        {
-            if (id != p.ProyectoId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(p).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProyectoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // DELETE api/<ProyectoController>/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            var p = await _context.Proyectos.FindAsync(id);
-            if (p == null)
-            {
-                return NotFound();
-            }
-
-            _context.Proyectos.Remove(p);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-
-            
-            
-            
-        }
-
-         private bool ProyectoExists(int id)
-        {
-            return _context.Proyectos.Any(e => e.ProyectoId == id);
-        }
-}
+    }

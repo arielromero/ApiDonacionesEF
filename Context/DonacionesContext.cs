@@ -19,6 +19,7 @@ public class DonacionesContext: DbContext
       donante.HasKey(d => d.DonanteId);
       donante.Property(d => d.Nombre).IsRequired().HasMaxLength(150);
       donante.Property(d => d.Apellido).IsRequired().HasMaxLength(150);
+      
     });
 
     modelBuilder.Entity<Proyecto>( proyecto => 
@@ -28,6 +29,7 @@ public class DonacionesContext: DbContext
       proyecto.Property(d => d.Titulo).IsRequired().HasMaxLength(200);
       proyecto.Property(d => d.Descripcion).IsRequired(false);
       proyecto.Property(d => d.Monto).IsRequired();
+      
     });
 
     modelBuilder.Entity<Donacion>( donacion => 
@@ -37,8 +39,8 @@ public class DonacionesContext: DbContext
       donacion.Property(d => d.ProyectoId).IsRequired();
       donacion.Property(d => d.DonacionId).IsRequired();
       donacion.Property(d => d.Monto).IsRequired();
-      donacion.HasOne(d => d.Donante).WithMany(d => d.Donaciones).HasForeignKey(d => d.DonanteId);
-      donacion.HasOne(d => d.Proyecto).WithMany(d => d.Donaciones).HasForeignKey(d => d.ProyectoId);
+      donacion.HasOne(d => d.Donante).WithMany().HasForeignKey(d => d.DonanteId);
+      donacion.HasOne(d => d.Proyecto).WithMany().HasForeignKey(d => d.ProyectoId);
     });
   }
 

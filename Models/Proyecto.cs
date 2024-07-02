@@ -7,18 +7,16 @@ using System.Threading.Tasks;
 namespace apiNetDonacionesEF.Models;
 
 public class Proyecto
-{   [Key]
+{   
     public int ProyectoId {get;set;}
-    [Required]
-    [MaxLength(150)]
     public string Titulo {get;set;}
     public string Descripcion {get;set;}
     public double Monto {get;set;}
-    public List<Donacion> Donaciones {get;set;}
+    //public virtual List<Donacion> Donaciones {get;set;}
 
     public Proyecto()
     {
-        Donaciones = new List<Donacion>();
+        //Donaciones = new List<Donacion>();
      }
 
   
