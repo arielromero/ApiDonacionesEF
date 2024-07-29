@@ -19,6 +19,7 @@ public class DonacionesContext: DbContext
       donante.HasKey(d => d.DonanteId);
       donante.Property(d => d.Nombre).IsRequired().HasMaxLength(150);
       donante.Property(d => d.Apellido).IsRequired().HasMaxLength(150);
+      donante.Property(d => d.Dni).IsRequired().HasMaxLength(8);
       
     });
 

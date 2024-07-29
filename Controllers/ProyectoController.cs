@@ -28,6 +28,14 @@ public class ProyectoController : ControllerBase
         return Ok(proyectos);
     }
 
+     [HttpGet("{id}/donaciones")]
+     public async Task<ActionResult<IEnumerable<Donacion>>> GetDonaciones(int id)
+     {
+        var proyecto = await _proyectoService.GetById(id);
+         var donacions = await  _proyectoService.GetDonacionesbyProyecto(proyecto);
+         return Ok(donacions);
+     }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Proyecto>> GetProyecto(int id)
     {

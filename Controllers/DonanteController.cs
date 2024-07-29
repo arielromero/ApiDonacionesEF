@@ -21,7 +21,7 @@ namespace apiNetDonacionesEF.Controllers;
 
     }
 
-    [HttpGet("/api/Donante")]
+    [HttpGet("/api/Donantes")]
     public async Task<ActionResult<IEnumerable<Donante>>> GetDonantes([FromQuery] string apellido="")
     {
         var donantes = await _donanteService.GetAll();
@@ -31,7 +31,7 @@ namespace apiNetDonacionesEF.Controllers;
         return Ok(donantes);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("/api/Donantes/{id}")]
     public async Task<ActionResult<Donante>> GetDonante(int id)
     {
         var donante = await _donanteService.GetById(id);

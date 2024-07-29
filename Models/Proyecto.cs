@@ -17,7 +17,7 @@ public class Proyecto
     public Proyecto()
     {
         //Donaciones = new List<Donacion>();
-     }
+        }
 
   
 

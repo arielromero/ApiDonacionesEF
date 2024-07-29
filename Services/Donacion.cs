@@ -25,6 +25,7 @@ public class DonacionService:IDonacionService
         return await _context.Donaciones.Include(p => p.Proyecto).Include(p => p.Donante).ToListAsync();
     }
 
+
     // Obtener un donacion por id
     public async Task<Donacion> GetById(int id)
     {

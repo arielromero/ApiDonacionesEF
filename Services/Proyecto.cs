@@ -31,6 +31,12 @@ public class ProyectoService:IProyectoService
         return await _context.Proyectos.FindAsync(id);
     }
 
+    
+    public async Task<IEnumerable<Donacion>> GetDonacionesbyProyecto(Proyecto p)
+    {
+        return await _context.Donaciones.Where(d => d.ProyectoId == p.ProyectoId).Include(p => p.Proyecto).Include(p => p.Donante).ToListAsync();
+    }
+
     // Actualizar un proyecto
     public async Task<Proyecto> Update(Proyecto proyecto)
     {
@@ -65,6 +71,8 @@ public interface IProyectoService
 
   public Task<bool> Delete(int id);
   public Task<Proyecto> Update(Proyecto proyecto);
+
+  public  Task<IEnumerable<Donacion>> GetDonacionesbyProyecto(Proyecto p);
 
 
 }
